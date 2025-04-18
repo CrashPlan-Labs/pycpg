@@ -55,19 +55,19 @@ all = [
 ]
 
 [tool.pytest.ini_options]
-testpaths = [ 
-    "tests" 
+testpaths = [
+    "tests"
 ]
 filterwarnings = [
     "error"
 ]
 
 [tools.flake8]
-# E = 
-# F = 
-# W = 
+# E =
+# F =
+# W =
 # B9 = ,
-# ISC = 
+# ISC =
 
 select = [
     "B", # bugbear
