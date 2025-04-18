@@ -62,7 +62,7 @@ filterwarnings = [
     "error"
 ]
 
-[tools.flake8]
+[tool.flake8]
 select = [
     "B", # bugbear
     "E", # pycodestyle errors
