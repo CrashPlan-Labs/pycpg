@@ -63,12 +63,6 @@ filterwarnings = [
 ]
 
 [tools.flake8]
-# E =
-# F =
-# W =
-# B9 = ,
-# ISC =
-
 select = [
     "B", # bugbear
     "E", # pycodestyle errors
@@ -77,7 +71,7 @@ select = [
     "B9", # bugbear opinions
     "ISC", #implicit str concat
 ]
-ignore = [
+extend-ignore = [
     "B950", # line length, handled by black
     "E501",
     "E722", # bare except, handled by bugbear
@@ -86,7 +80,7 @@ ignore = [
     "B907", # allow manual quoting
 ]
 # up to 88 allowed by bugbear B950
-max-line-length = 85
+max-line-length = 88
 per-file-ignores = """
     src/pycpg/constants/__init__.py: F401
     docs/conf.py: F401
