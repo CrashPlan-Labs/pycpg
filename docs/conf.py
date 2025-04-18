@@ -11,7 +11,7 @@
 #
 import os
 import sys
-from importlib.metadata import version
+from importlib.metadata import version as get_version
 
 # -- Project information -----------------------------------------------------
 
@@ -20,9 +20,9 @@ copyright = "2025, CrashPlanGroup"
 author = "CrashPlanGroup"
 
 # The short X.Y version
-version = version("pycpg")
+version = get_version("pycpg")
 # The full version, including alpha/beta/rc tags
-release = version("pycpg")
+release = get_version("pycpg")
 
 
 # -- General configuration ---------------------------------------------------
