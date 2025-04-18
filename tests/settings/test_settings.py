@@ -1,9 +1,9 @@
 import sys
+from importlib.metadata import version
 
 import pytest
 
 import pycpg.settings as settings
-from pycpg.__version__ import __version__
 
 DEFAULT_USER_AGENT_FORMAT = "pycpg/{0} python/{1}"
 
@@ -13,7 +13,7 @@ def default_user_agent():
     python_version = (
         f"{sys.version_info[0]}.{sys.version_info[1]}.{sys.version_info[2]}"
     )
-    pycpg_version = __version__
+    pycpg_version = version("pycpg")
     default_user_agent = DEFAULT_USER_AGENT_FORMAT.format(pycpg_version, python_version)
     return default_user_agent
 

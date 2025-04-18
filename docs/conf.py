@@ -11,8 +11,7 @@
 #
 import os
 import sys
-
-import pycpg.__version__ as meta
+from importlib.metadata import version
 
 # -- Project information -----------------------------------------------------
 
@@ -21,9 +20,9 @@ copyright = "2025, CrashPlanGroup"
 author = "CrashPlanGroup"
 
 # The short X.Y version
-version = f"pycpg v{meta.__version__}"
+version = version("pycpg")
 # The full version, including alpha/beta/rc tags
-release = f"pycpg v{meta.__version__}"
+release = version("pycpg")
 
 
 # -- General configuration ---------------------------------------------------
