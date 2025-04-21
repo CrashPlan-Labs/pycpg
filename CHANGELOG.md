@@ -13,7 +13,8 @@ how a consumer would use the library (e.g. adding unit tests, updating documenta
  - As this is the first version of pycpg setting version number to 1.0.0
  - Removed Incydr functionality
  - Renamed base to pycpg from py42. This tool can now be used by calling py42.sdk.method
-- Updated required versions of tox ==4.25.0
+ - Updated required versions of tox ==4.25.0
+ - Increased minimum python version to 3.9
 
 ## 1.27.3 - 2024-12-18
 

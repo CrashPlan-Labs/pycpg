@@ -52,19 +52,13 @@ pyenv virtualenv 3.11.11 pycpg
 pyenv activate pycpg
 ```
 
-**Note**: Pycpg for end users supports Pythons versions <3.6 and <4 - However due to some of the build dependencies, you'll need a version >=3.7 for your virtual environment.  Use `pyenv --versions` to see all versions available for install. There are some known issues installing python 3.6 with pyenv on certain OS.
-
-If running into issues on Big Sur(Version 11) while installing python 3.6 the below may work
-
-```bash
-pyenv install --patch 3.6.14 < <(curl -sSL https://github.com/python/cpython/commit/8ea6353.patch)
-```
+**Note**: Pycpg for end users supports Pythons versions <3.9 and <4 - However due to some of the build dependencies, you'll need a version >=3.9 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
 
 Use `source deactivate` to exit the virtual environment and `pyenv activate pycpg` to reactivate it.
 
 ### Windows/Linux
 
-Install a version of python 3.6 or higher from [python.org](https://python.org).
+Install a version of python 3.9 or higher from [python.org](https://python.org).
 Next, in a directory somewhere outside the project, create and activate your virtual environment:
 
 ```bash
