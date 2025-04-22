@@ -12,7 +12,7 @@ from pycpg.exceptions import PycpgLegalHoldNotFoundOrPermissionDeniedError
 from pycpg.exceptions import PycpgUserAlreadyAddedError
 from pycpg.services.legalholdapiclient import LegalHoldApiClientService
 
-BASE_URI = "/api/v27"
+BASE_URI = "/api/v38"
 
 TEST_POLICY_UID = "123"
 TEST_MATTER_UID = "456"

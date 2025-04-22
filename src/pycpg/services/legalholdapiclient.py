@@ -31,7 +31,7 @@ class LegalHoldApiClientService(BaseService):
     - Add/remove Custodians from a Matter.
     """
 
-    _uri_prefix = "/api/v27"
+    _uri_prefix = "/api/v38"
 
     # object strings to pass to specify error messages
     _membership_string = "membership"
