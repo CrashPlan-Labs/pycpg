@@ -30,7 +30,7 @@ def mock_restore_connection_with_bad_request(mocker, mock_connection):
 
 class TestPushRestoreService:
     TEST_PERMISSIONS = "PERMISSIONS"
-    EXPECTED_URL = "/api/v9/restore/push"
+    EXPECTED_URL = "/api/v38/restore/push"
 
     def test_start_push_restore_uses_expected_request_parameters(
         self, mock_successful_connection, single_file_selection

@@ -209,7 +209,7 @@ class UserService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v18/scim-user-data/collated-view"
+        uri = "/api/v38/scim-user-data/collated-view"
         params = dict(userId=user_uid)
         return self._connection.get(uri, params=params)
 
