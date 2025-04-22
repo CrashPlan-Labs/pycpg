@@ -398,4 +398,4 @@ class LegalHoldService(BaseService):
         """
         data = {"legalHoldUid": legal_hold_uid}
         uri = "/api/v38/legal-hold-matter/activate"
-        return self._connection.post(uri,json=data)
+        return self._connection.post(uri, json=data)
