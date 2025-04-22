@@ -73,7 +73,7 @@ class TestOrgService:
         service = OrgService(mock_connection)
         service.get_agent_state("ORG_ID", property_name="KEY")
         expected_params = {"orgId": "ORG_ID", "propertyName": "KEY"}
-        uri = "/api/v14/agent-state/view-by-organization-id"
+        uri = "/api/v38/agent-state/view-by-organization-id"
         mock_connection.get.assert_called_once_with(uri, params=expected_params)
 
     def test_get_agent_full_disk_access_states_calls_get_agent_state_with_arguments(

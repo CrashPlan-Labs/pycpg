@@ -242,7 +242,7 @@ class DeviceService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing settings information.
         """
-        uri = "/api/v14/agent-state/view-by-device-guid"
+        uri = "/api/v38/agent-state/view-by-device-guid"
         params = {"deviceGuid": guid, "propertyName": property_name}
         return self._connection.get(uri, params=params)
 
