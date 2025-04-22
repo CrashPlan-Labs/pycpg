@@ -117,7 +117,7 @@ class TestApiClientAuth:
         auth = ApiClientAuth(mock_api_client_conn)
         auth(mock_request)
         params = {"grant_type": "client_credentials"}
-        headers = {"Content-Type": "application/json"}        
+        headers = {"Content-Type": "application/json"}
         mock_api_client_conn.post.assert_called_once_with(
             "/api/v3/oauth/token", params=params, headers=headers
         )
