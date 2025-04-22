@@ -13,7 +13,7 @@ from pycpg.response import PycpgResponse
 from pycpg.services.devices import DeviceService
 
 COMPUTER_URI = "/api/v1/Computer"
-UPGRADE_URI = "/api/v4/device-upgrade/upgrade-device"
+UPGRADE_URI = "/api/v3/device-upgrade/upgrade-device"
 
 DEFAULT_GET_DEVICES_PARAMS = {
     "active": None,
