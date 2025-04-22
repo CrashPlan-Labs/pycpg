@@ -154,7 +154,7 @@ def test_add_one_and_one_equals_two():
 #### Integration tests
 
 If not using the mock server, set the environment variables `CPG_HOST`, `CPG_USER`,
-and `CPG_PW` with CCA credentials. Otherwise, the integration tests default to using
+and `CPG_PW` with CCA credentials. Then `CPG_API_CLIENT_ID` `CPG_API_CLIENT_SECRET` for an API client with all permissions. Otherwise, the integration tests default to using
 `http://127.0.0.1:4200`, which is the same address that the mock server is set to run on.
 
 To execute integration tests:
