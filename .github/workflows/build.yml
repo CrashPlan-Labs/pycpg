@@ -12,6 +12,7 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    environment: integration
     strategy:
       matrix:
         python: [3.9, "3.10", 3.11]
@@ -50,7 +51,6 @@ jobs:
       #   run: cd code42-mock-servers; docker compose up -d --build
       
       - name: Run the integration tests
-        environment: integration
         env:
           CPG_HOST: '${{ vars.CPG_HOST }}'
           CPG_USER: '${{ vars.CPG_USER }}'
