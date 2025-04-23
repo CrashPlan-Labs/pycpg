@@ -57,4 +57,6 @@ jobs:
           CPG_PW: ${{ secrets.CPG_PW }}
           CPG_API_CLIENT_ID: ${{ env.CPG_API_CLIENT_ID }}
           CPG_API_CLIENT_SECRET: ${{ secrets.CPG_API_CLIENT_SECRET }}
+        run: echo "env cpg_host ${{ env.CPG_HOST }}"
+        run: echo "var cpg_host ${{ var.CPG_HOST }}"
         run: sleep 15; cd pycpg; tox -e integration
