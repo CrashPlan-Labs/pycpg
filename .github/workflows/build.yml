@@ -58,4 +58,3 @@ jobs:
           CPG_API_CLIENT_ID: ${{ env.CPG_API_CLIENT_ID }}
           CPG_API_CLIENT_SECRET: ${{ secrets.CPG_API_CLIENT_SECRET }}
         run: sleep 15; cd pycpg; tox -e integration
-1
