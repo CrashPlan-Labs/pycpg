@@ -49,10 +49,10 @@ jobs:
       #     EOF
       # - name: Start up the mock servers
       #   run: cd code42-mock-servers; docker compose up -d --build
-      
+
       - name: Run the integration tests
         env:
-          CPG_HOST: '${{ vars.CPG_HOST }}'
+          CPG_HOST: '${{ env.CPG_HOST }}'
           CPG_USER: '${{ vars.CPG_USER }}'
           CPG_PW: ${{ secrets.CPG_PW }}
           CPG_API_CLIENT_ID: '${{ vars.CPG_API_CLIENT_ID }}'
