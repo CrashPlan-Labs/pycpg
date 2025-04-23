@@ -12,15 +12,13 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      CPG_HOST: ${{ var.CPG_HOST }}
-      CPG_USER: ${{ var.CPG_USER }}
-      CPG_API_CLIENT_ID: ${{ var.CPG_API_CLIENT_ID }}
-      CPG_API_CLIENT_SECRET: ${{ secrets.CPG_API_CLIENT_SECRET }}
-      CPG_PW: ${{ secrets.CPG_PW }}
     strategy:
       matrix:
-        python: [3.9, "3.10", 3.11]
+        python: ["3.9", "3.10", "3.11"]
+    env:
+      CPG_HOST: ${{ vars.CPG_HOST }}
+      CPG_USER: ${{ vars.CPG_USER }}
+      CPG_API_CLIENT_ID: ${{ vars.CPG_API_CLIENT_ID }}
 
     steps:
       - uses: actions/checkout@v2
@@ -56,4 +54,4 @@ jobs:
       #   run: cd code42-mock-servers; docker compose up -d --build
 
       - name: Run the integration tests
-       run: sleep 15; cd pycpg; tox -e integration
+        run: sleep 15; cd pycpg; tox -e integration
