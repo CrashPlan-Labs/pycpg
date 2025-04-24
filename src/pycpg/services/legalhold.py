@@ -41,7 +41,7 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v4/legal-hold-policy/create"
+        uri = "/api/v38/legal-hold-policy/create"
         data = {"name": name, "policy": policy}
         return self._connection.post(uri, json=data)
 
@@ -80,7 +80,7 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the Policy.
         """
-        uri = "/api/v4/legal-hold-policy/view"
+        uri = "/api/v38/legal-hold-policy/view"
         params = {"legalHoldPolicyUid": legal_hold_policy_uid}
         return self._connection.get(uri, params=params)
 
@@ -90,7 +90,7 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the list of Policies.
         """
-        uri = "/api/v4/legal-hold-policy/list"
+        uri = "/api/v38/legal-hold-policy/list"
         return self._connection.get(uri)
 
     def get_matter_by_uid(self, legal_hold_uid):
@@ -383,7 +383,7 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v4/legal-hold-deactivation/update"
+        uri = "/api/v38/legal-hold-matter/deactivate"
         data = {"legalHoldUid": legal_hold_uid}
         return self._connection.post(uri, json=data)
 
@@ -396,5 +396,6 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = f"/api/v1/LegalHoldReactivation/{legal_hold_uid}"
-        return self._connection.put(uri)
+        data = {"legalHoldUid": legal_hold_uid}
+        uri = "/api/v38/legal-hold-matter/activate"
+        return self._connection.post(uri, json=data)

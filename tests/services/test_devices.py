@@ -13,7 +13,7 @@ from pycpg.response import PycpgResponse
 from pycpg.services.devices import DeviceService
 
 COMPUTER_URI = "/api/v1/Computer"
-UPGRADE_URI = "/api/v4/device-upgrade/upgrade-device"
+UPGRADE_URI = "/api/v38/device-upgrade/upgrade-device"
 
 DEFAULT_GET_DEVICES_PARAMS = {
     "active": None,
@@ -120,7 +120,7 @@ class TestDeviceService:
         service = DeviceService(mock_connection)
         service.get_agent_state("DEVICE_ID", property_name="KEY")
         expected_params = {"deviceGuid": "DEVICE_ID", "propertyName": "KEY"}
-        uri = "/api/v14/agent-state/view-by-device-guid"
+        uri = "/api/v38/agent-state/view-by-device-guid"
         mock_connection.get.assert_called_once_with(uri, params=expected_params)
 
     def test_get_agent_full_disk_access_state_calls_get_agent_state_with_arguments(

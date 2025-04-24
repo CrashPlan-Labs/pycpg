@@ -198,7 +198,7 @@ class OrgService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing settings information.
         """
-        uri = "/api/v14/agent-state/view-by-organization-id"
+        uri = "/api/v38/agent-state/view-by-organization-id"
         params = {"orgId": org_id, "propertyName": property_name}
         return self._connection.get(uri, params=params)
 

@@ -51,7 +51,8 @@ class ApiClientAuth(CPGRenewableAuth):
     def _get_credentials(self):
         uri = "/api/v3/oauth/token"
         params = {"grant_type": "client_credentials"}
-        response = self._auth_connection.post(uri, params=params)
+        headers = {"Content-Type": "application/json"}
+        response = self._auth_connection.post(uri, params=params, headers=headers)
         return f"Bearer {response['access_token']}"
 
 

@@ -14,7 +14,7 @@ def pytest_addoption(parser):
     )
     parser.addini("device_guid", "Device guid from which archival was done.")
     parser.addini("destination_device_guid", "Device guid to which archival was done.")
-    parser.addini("archive_guid", "Guid of the archival.")
+    parser.addini("archive_guid", "Guid of the archive in cold storage.")
     parser.addini("path", "Complete path of the file with filename which was archived.")
 
 

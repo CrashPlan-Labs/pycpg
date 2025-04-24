@@ -198,7 +198,7 @@ class DeviceService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v4/computer-deactivation/update"
+        uri = "/api/v38/computer-deactivation/update"
         data = {"id": device_id}
         try:
             return self._connection.post(uri, json=data)
@@ -215,7 +215,7 @@ class DeviceService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v4/computer-deactivation/remove"
+        uri = "/api/v38/computer-deactivation/remove"
         data = {"id": device_id}
         return self._connection.post(uri, json=data)
 
@@ -242,7 +242,7 @@ class DeviceService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing settings information.
         """
-        uri = "/api/v14/agent-state/view-by-device-guid"
+        uri = "/api/v38/agent-state/view-by-device-guid"
         params = {"deviceGuid": guid, "propertyName": property_name}
         return self._connection.get(uri, params=params)
 
@@ -295,5 +295,5 @@ class DeviceService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the result of the upgrade request.
         """
-        uri = "/api/v4/device-upgrade/upgrade-device"
+        uri = "/api/v38/device-upgrade/upgrade-device"
         return self._connection.post(uri, json={"deviceGuid": guid})

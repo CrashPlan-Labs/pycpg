@@ -257,7 +257,7 @@ class TestUserService:
     ):
         service = UserService(mock_connection)
         service.get_scim_data_by_uid("USER_ID")
-        uri = "/api/v18/scim-user-data/collated-view"
+        uri = "/api/v38/scim-user-data/collated-view"
         mock_connection.get.assert_called_once_with(uri, params={"userId": "USER_ID"})
 
     def test_get_available_roles_calls_get_with_expected_uri(self, mock_connection):

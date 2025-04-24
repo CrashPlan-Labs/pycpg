@@ -52,19 +52,13 @@ pyenv virtualenv 3.11.11 pycpg
 pyenv activate pycpg
 ```
 
-**Note**: Pycpg for end users supports Pythons versions <3.6 and <4 - However due to some of the build dependencies, you'll need a version >=3.7 for your virtual environment.  Use `pyenv --versions` to see all versions available for install. There are some known issues installing python 3.6 with pyenv on certain OS.
-
-If running into issues on Big Sur(Version 11) while installing python 3.6 the below may work
-
-```bash
-pyenv install --patch 3.6.14 < <(curl -sSL https://github.com/python/cpython/commit/8ea6353.patch)
-```
+**Note**: Pycpg for end users supports Pythons versions <3.9 and <4 - However due to some of the build dependencies, you'll need a version >=3.9 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
 
 Use `source deactivate` to exit the virtual environment and `pyenv activate pycpg` to reactivate it.
 
 ### Windows/Linux
 
-Install a version of python 3.6 or higher from [python.org](https://python.org).
+Install a version of python 3.9 or higher from [python.org](https://python.org).
 Next, in a directory somewhere outside the project, create and activate your virtual environment:
 
 ```bash
@@ -160,7 +154,7 @@ def test_add_one_and_one_equals_two():
 #### Integration tests
 
 If not using the mock server, set the environment variables `CPG_HOST`, `CPG_USER`,
-and `CPG_PW` with CCA credentials. Otherwise, the integration tests default to using
+and `CPG_PW` with CCA credentials. Then `CPG_API_CLIENT_ID` `CPG_API_CLIENT_SECRET` for an API client with all permissions. Otherwise, the integration tests default to using
 `http://127.0.0.1:4200`, which is the same address that the mock server is set to run on.
 
 To execute integration tests:

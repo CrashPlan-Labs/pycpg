@@ -67,7 +67,7 @@ class PushRestoreService(RestoreService):
         existing_files=None,
     ):
         """Submits a push restore job."""
-        uri = "/api/v9/restore/push"
+        uri = "/api/v38/restore/push"
         json_dict = {
             "sourceComputerGuid": device_guid,
             "acceptingComputerGuid": accepting_device_guid,

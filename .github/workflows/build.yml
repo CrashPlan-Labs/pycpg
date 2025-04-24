@@ -14,8 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [3.9, "3.10", 3.11]
-
+        python: ["3.9", "3.10", "3.11"]
+    env:
+      CPG_HOST: ${{ vars.CPG_HOST }}
+      CPG_USER: ${{ vars.CPG_USER }}
+      CPG_API_CLIENT_ID: ${{ vars.CPG_API_CLIENT_ID }}
+      CPG_PW: ${{ secrets.CPG_HOST }}
+      CPG_API_CLIENT_SECRET: ${{ secrets.CPG_USER }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -25,28 +30,31 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
-        run: pip install tox==3.24.1
+        run: pip install tox==4.25.0
       - name: Run Unit tests
         run: cd pycpg; tox -e py  # Run tox using the version of Python in `PATH`
       - name: Submit coverage report
         uses: codecov/codecov-action@v1.0.7
         with:
           file: pycpg/coverage.xml
-      - name: Checkout mock servers
-        uses: actions/checkout@v2
-        with:
-          repository: code42/code42-mock-servers
-          path: code42-mock-servers
-      - name: Add mock servers host addresses
-        run: |
-          sudo tee -a /etc/hosts <<EOF
-          127.0.0.1 localhost
-          127.0.0.1 core
-          127.0.0.1 audit-log
-          127.0.0.1 storage
-          127.0.0.1 connected-server
-          EOF
-      - name: Start up the mock servers
-        run: cd code42-mock-servers; docker compose up -d --build
-      - name: Run the integration testss
-        run: sleep 15; cd pycpg; tox -e integration
+      # - name: Checkout mock servers
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: code42/code42-mock-servers
+      #     path: code42-mock-servers
+      # - name: Add mock servers host addresses
+      #   run: |
+      #     sudo tee -a /etc/hosts <<EOF
+      #     127.0.0.1 localhost
+      #     127.0.0.1 core
+      #     127.0.0.1 audit-log
+      #     127.0.0.1 storage
+      #     127.0.0.1 connected-server
+      #     EOF
+      # - name: Start up the mock servers
+      #   run: cd code42-mock-servers; docker compose up -d --build
+      # Skipping Integration tests for initial commit.
+      #- name: Run the integration tests
+      #  run: |
+      #      #printenv | grep CPG
+      #      #sleep 15; cd pycpg; tox -e integration

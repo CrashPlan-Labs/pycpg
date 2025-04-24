@@ -7,8 +7,8 @@ from pycpg.clients.settings import get_val
 from pycpg.clients.settings.device_settings import DeviceSettings
 from pycpg.exceptions import PycpgError
 
-TEST_USER_ID = 13548744
-TEST_COMPUTER_ID = 4290210
+TEST_USER_ID = 2136241
+TEST_COMPUTER_ID = 2682772
 TEST_COMPUTER_GUID = 42000000
 TEST_COMPUTER_ORG_ID = 424242
 TEST_COMPUTER_NAME = "Settings Test Device"
