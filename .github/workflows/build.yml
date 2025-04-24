@@ -56,5 +56,5 @@ jobs:
 
       - name: Run the integration tests
         run: |
-            printenv
+            printenv | grep CPG
             sleep 15; cd pycpg; tox -e integration
