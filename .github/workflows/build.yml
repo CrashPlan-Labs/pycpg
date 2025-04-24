@@ -19,7 +19,8 @@ jobs:
       CPG_HOST: ${{ vars.CPG_HOST }}
       CPG_USER: ${{ vars.CPG_USER }}
       CPG_API_CLIENT_ID: ${{ vars.CPG_API_CLIENT_ID }}
-
+      CPG_PW: ${{ secrets.CPG_HOST }}
+      CPG_API_CLIENT_SECRET: ${{ secrets.CPG_USER }}
     steps:
       - uses: actions/checkout@v2
         with:
@@ -54,4 +55,6 @@ jobs:
       #   run: cd code42-mock-servers; docker compose up -d --build
 
       - name: Run the integration tests
-        run: sleep 15; cd pycpg; tox -e integration
+        run: |
+            printenv
+            sleep 15; cd pycpg; tox -e integration
