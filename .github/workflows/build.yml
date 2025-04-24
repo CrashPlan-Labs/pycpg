@@ -53,7 +53,7 @@ jobs:
       #     EOF
       # - name: Start up the mock servers
       #   run: cd code42-mock-servers; docker compose up -d --build
-      # Skipping Integration tests for initial commit. 
+      # Skipping Integration tests for initial commit.
       #- name: Run the integration tests
       #  run: |
       #      #printenv | grep CPG
