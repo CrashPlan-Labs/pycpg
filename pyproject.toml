@@ -45,9 +45,9 @@ docs = [
 ]
 dev = [
     "flake8 == 3.9.2",
-    "pytest == 6.2.4",
-    "pytest-cov == 2.12.1",
-    "pytest-mock == 3.6.1",
+    "pytest == 7.2.0",
+    "pytest-cov == 4.0.0",
+    "pytest-mock == 3.10.0",
     "tox == 4.25.0",
 ]
 all = [
