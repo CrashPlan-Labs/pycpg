@@ -8,7 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The intended audience of this file is for pycpg consumers -- as such, changes that don't affect
 how a consumer would use the library (e.g. adding unit tests, updating documentation, etc) are not captured here.
 
-## Removed 1.0.0
+## 1.0.1 - 2025-05-22
+
+### Changed
+
+ - Version bump
+
+## 1.0.0 - 2025-04-24
+
+### Changed
 
  - As this is the first version of pycpg setting version number to 1.0.0
  - Removed Incydr functionality

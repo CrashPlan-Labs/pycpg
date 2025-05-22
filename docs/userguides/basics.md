@@ -132,7 +132,7 @@ import pycpg.util
 sdk = pycpg.sdk.from_local_account("https://console.us1.crashplan.com", "my_username", "my_password")
 
 # Get the epoch date 14 days in the past
-event_date = datetime.utcnow() - timedelta(days=14)
+event_date = datetime.now(datetime.UTC) - timedelta(days=14)
 event_epoch = (event_date - datetime.utcfromtimestamp(0)).total_seconds()
 
 #print all the event types for all events in the past 14 days
