@@ -16,7 +16,7 @@ how a consumer would use the library (e.g. adding unit tests, updating documenta
 
 ## 1.0.0 - 2025-04-24
 
-### Changed 
+### Changed
 
  - As this is the first version of pycpg setting version number to 1.0.0
  - Removed Incydr functionality
