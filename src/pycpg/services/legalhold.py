@@ -46,7 +46,12 @@ class LegalHoldService(BaseService):
         return self._connection.post(uri, json=data)
 
     def create_matter(
-        self, name, hold_policy_uid, description=None, notes=None, externalReference=None
+        self,
+        name,
+        hold_policy_uid,
+        description=None,
+        notes=None,
+        externalReference=None,
     ):
         """Creates a new, active Legal Hold Matter.
 
@@ -215,7 +220,7 @@ class LegalHoldService(BaseService):
         """
         active_state = _active_state_map(active)
         page_size = page_size or settings.items_per_page
-        #we have list and view for different items. List will show based on a search, view for specific items.
+        # we have list and view for different items. List will show based on a search, view for specific items.
         if legal_hold_membership_uid or (legal_hold_uid and user_uid):
             params = {
                 "legalHoldMembershipUid": legal_hold_membership_uid,
@@ -229,9 +234,8 @@ class LegalHoldService(BaseService):
                 if "At least one criteria must be specified" in ex.response.text:
                     raise PycpgLegalHoldCriteriaMissingError(ex)
                 raise
-        else:    
+        else:
             params = {
-                "legalHoldMembershipUid": legal_hold_membership_uid,
                 "legalHoldUid": legal_hold_uid,
                 "userUid": user_uid,
                 "user": user,

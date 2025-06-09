@@ -20,8 +20,8 @@ DEFAULT_GET_LEGAL_HOLDS_PARAMS = {
     "targetComputerGuid": None,
     "incBackupUsage": None,
     "incCounts": True,
-    "pgNum": 1,
-    "pgSize": 500,
+    "page": 1,
+    "pageSize": 500,
     "q": None,
 }
 
@@ -148,36 +148,50 @@ class TestLegalHoldService:
         service = LegalHoldService(mock_connection)
         service.get_matters_page(10, "creator", True, "name", "ref", 100)
         mock_connection.get.assert_called_once_with(
-            "/api/v1/LegalHold",
+            "/api/v38/legal-hold-matter/list",
             params={
-                "creatorUserUid": "creator",
-                "activeState": "ACTIVE",
+                "creatorPrincipalId": "creator",
+                "active": "ACTIVE",
                 "name": "name",
-                "holdExtRef": "ref",
-                "pgNum": 10,
-                "pgSize": 100,
+                "externalReference": "ref",
+                "page": 10,
+                "pageSize": 100,
             },
         )
 
-    def test_get_custodians_page_calls_get_with_expected_url_and_params(
+    def test_get_custodians_page_calls_get_with_expected_url_and_search_params(
         self, mock_connection
     ):
         service = LegalHoldService(mock_connection)
         service.get_custodians_page(
-            20, "membership", "legalhold", "user ID", "username", True, 200
+            20, "legalhold", "user ID", "username", True, 200
         )
         mock_connection.get.assert_called_once_with(
-            "/api/v1/LegalHoldMembership",
+            "/api/v38/legal-hold-membership/list",
             params={
-                "legalHoldMembershipUid": "membership",
                 "legalHoldUid": "legalhold",
                 "userUid": "user ID",
                 "user": "username",
                 "activeState": "ACTIVE",
-                "pgNum": 20,
-                "pgSize": 200,
+                "page": 20,
+                "pageSize": 200,
             },
         )
+
+    def test_get_custodians_page_calls_get_with_expected_url_and_specific_params(
+        self, mock_connection
+    ):
+        service = LegalHoldService(mock_connection)
+        service.get_custodians_page(
+            "membership"
+        )
+        mock_connection.get.assert_called_once_with(
+            "/api/v38/legal-hold-membership/view",
+            params={
+                "legalHoldMembershipUid": "membership",
+            },
+        )
+
 
     def test_get_events_page_calls_get_with_expected_url_and_params(
         self, mock_connection
@@ -185,13 +199,13 @@ class TestLegalHoldService:
         service = LegalHoldService(mock_connection)
         service.get_events_page("legalhold", None, None, 20, 200)
         mock_connection.get.assert_called_once_with(
-            "/api/v1/LegalHoldEventReport",
+            "/api/v38/legal-hold-event/list",
             params={
                 "legalHoldUid": "legalhold",
                 "minEventDate": None,
                 "maxEventDate": None,
-                "pgNum": 20,
-                "pgSize": 200,
+                "page": 20,
+                "pageSize": 200,
             },
         )
 
@@ -221,7 +235,7 @@ class TestLegalHoldService:
         service.add_to_matter("user", "legal")
         expected_data = {"legalHoldUid": "legal", "userUid": "user"}
         mock_connection.post.assert_called_once_with(
-            "/api/v1/LegalHoldMembership", json=expected_data
+            "/api/v38/legal-hold-membership/create", json=expected_data
         )
 
     def test_add_to_matter_when_post_raises_bad_request_error_indicating_user_already_added_raises_user_already_added(
