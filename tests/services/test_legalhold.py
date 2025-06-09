@@ -163,28 +163,19 @@ class TestLegalHoldService:
         self, mock_connection
     ):
         service = LegalHoldService(mock_connection)
-        service.get_custodians_page(20, "legalhold", "user ID", "username", True, 200)
+        service.get_custodians_page(
+            20, "membership","legalhold", "user ID", "username", True, 200
+        )
         mock_connection.get.assert_called_once_with(
             "/api/v38/legal-hold-membership/list",
             params={
+                "legalHoldMembershipUid": "membership",
                 "legalHoldUid": "legalhold",
                 "userUid": "user ID",
                 "user": "username",
                 "activeState": "ACTIVE",
                 "page": 20,
                 "pageSize": 200,
-            },
-        )
-
-    def test_get_custodians_page_calls_get_with_expected_url_and_specific_params(
-        self, mock_connection
-    ):
-        service = LegalHoldService(mock_connection)
-        service.get_custodians_page("membership")
-        mock_connection.get.assert_called_once_with(
-            "/api/v38/legal-hold-membership/view",
-            params={
-                "legalHoldMembershipUid": "membership",
             },
         )
 
@@ -196,6 +187,7 @@ class TestLegalHoldService:
         mock_connection.get.assert_called_once_with(
             "/api/v38/legal-hold-event/list",
             params={
+
                 "legalHoldUid": "legalhold",
                 "minEventDate": None,
                 "maxEventDate": None,

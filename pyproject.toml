@@ -9,7 +9,7 @@ name = "pycpg"
 version = "1.0.2"
 description = "The Official CrashPlan Python API Client"
 readme = {file = "README.md", content-type = "text/markdown"}
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 keywords = ["backup","crashplan"]
 dependencies = [
     "urllib3 >=1.26.6,<2",
@@ -20,7 +20,6 @@ classifiers = [
     "Natural Language :: English",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
