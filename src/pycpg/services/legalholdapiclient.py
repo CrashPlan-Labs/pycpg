@@ -57,7 +57,7 @@ class LegalHoldApiClientService(BaseService):
         legal_hold_policy_uid,
         description=None,
         notes=None,
-        hold_ext_ref=None,
+        externalReference=None,
     ):
         """Creates a new, active Legal Hold Matter.
 
@@ -67,7 +67,7 @@ class LegalHoldApiClientService(BaseService):
                 Matter.
             description (str, optional): An optional description of the Matter. Defaults to None.
             notes (str, optional): Optional notes information. Defaults to None.
-            hold_ext_ref (str, optional): Optional external reference information. Defaults to None.
+            externalReference (str, optional): Optional external reference information. Defaults to None.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
@@ -78,7 +78,7 @@ class LegalHoldApiClientService(BaseService):
             "name": name,
             "description": description,
             "notes": notes,
-            "externalReference": hold_ext_ref,
+            "externalReference": externalReference,
         }
         return self._connection.post(uri, json=data)
 
@@ -135,7 +135,7 @@ class LegalHoldApiClientService(BaseService):
         creator_user_uid=None,
         active=True,
         name=None,
-        hold_ext_ref=None,
+        externalReference=None,
         page_size=None,
     ):
         """Gets a page of existing Legal Hold Matters.
@@ -149,7 +149,7 @@ class LegalHoldApiClientService(BaseService):
                 of state. Defaults to True.
             name (str, optional): Find Matters with a 'name' that either equals or contains
                 this value. Defaults to None.
-            hold_ext_ref (str, optional): Find Matters having a matching external reference field.
+            externalReference (str, optional): Find Matters having a matching external reference field.
                 Defaults to None.
             page_size (int, optional): The number of legal hold items to return per page.
                 Defaults to `pycpg.settings.items_per_page`.
@@ -165,14 +165,14 @@ class LegalHoldApiClientService(BaseService):
             "creatorPrincipalId": creator_user_uid,
             "active": str(active).lower(),
             "name": name,
-            "externalReference": hold_ext_ref,
+            "externalReference": externalReference,
             "page": page_num,
             "pageSize": page_size,
         }
         return self._connection.get(uri, params=params)
 
     def get_all_matters(
-        self, creator_user_uid=None, active=True, name=None, hold_ext_ref=None
+        self, creator_user_uid=None, active=True, name=None, externalReference=None
     ):
         """Gets all existing Legal Hold Matters.
 
@@ -184,7 +184,7 @@ class LegalHoldApiClientService(BaseService):
                 of state. Defaults to True.
             name (str, optional): Find Matters with a 'name' that either equals or contains
                 this value. Defaults to None.
-            hold_ext_ref (str, optional): Find Matters having a matching external reference field.
+            externalReference (str, optional): Find Matters having a matching external reference field.
                 Defaults to None.
 
         Returns:
@@ -197,7 +197,7 @@ class LegalHoldApiClientService(BaseService):
             creator_user_uid=creator_user_uid,
             active=active,
             name=name,
-            hold_ext_ref=hold_ext_ref,
+            externalReference=externalReference,
         )
 
     def get_custodians_page(

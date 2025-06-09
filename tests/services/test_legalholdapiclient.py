@@ -129,7 +129,7 @@ class TestLegalHoldApiClientService:
             TEST_POLICY_UID,
             description="description",
             notes="note",
-            hold_ext_ref="ext_ref",
+            externalReference="ext_ref",
         )
         data = {
             "name": "MATTER_NAME",
