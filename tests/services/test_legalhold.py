@@ -163,9 +163,7 @@ class TestLegalHoldService:
         self, mock_connection
     ):
         service = LegalHoldService(mock_connection)
-        service.get_custodians_page(
-            20, "legalhold", "user ID", "username", True, 200
-        )
+        service.get_custodians_page(20, "legalhold", "user ID", "username", True, 200)
         mock_connection.get.assert_called_once_with(
             "/api/v38/legal-hold-membership/list",
             params={
@@ -182,16 +180,13 @@ class TestLegalHoldService:
         self, mock_connection
     ):
         service = LegalHoldService(mock_connection)
-        service.get_custodians_page(
-            "membership"
-        )
+        service.get_custodians_page("membership")
         mock_connection.get.assert_called_once_with(
             "/api/v38/legal-hold-membership/view",
             params={
                 "legalHoldMembershipUid": "membership",
             },
         )
-
 
     def test_get_events_page_calls_get_with_expected_url_and_params(
         self, mock_connection
