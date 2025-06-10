@@ -1,5 +1,6 @@
+import datetime
 import json
-from datetime import datetime
+from datetime import datetime as dt
 
 MICROSECOND_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
 DATE_STR_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -45,7 +46,7 @@ def convert_timestamp_to_str(timestamp):
         (str): A str representing the given timestamp. Example output looks like
         '2020-03-25T15:29:04.465Z'.
     """
-    date = datetime.utcfromtimestamp(timestamp)
+    date = dt.fromtimestamp(timestamp, datetime.UTC)
     return convert_datetime_to_timestamp_str(date)
 
 
@@ -102,20 +103,18 @@ def to_list(value):
 def parse_timestamp_to_milliseconds_precision(timestamp):
     if isinstance(timestamp, (int, float)):
         return convert_timestamp_to_str(timestamp)
-    elif isinstance(timestamp, datetime):
+    elif isinstance(timestamp, dt):
         return convert_datetime_to_timestamp_str(timestamp)
     elif isinstance(timestamp, str):
         return convert_datetime_to_timestamp_str(
-            datetime.strptime(timestamp, DATE_STR_FORMAT)
+            dt.strptime(timestamp, DATE_STR_FORMAT)
         )
 
 
 def parse_timestamp_to_microseconds_precision(timestamp):
     if isinstance(timestamp, (int, float)):
-        return datetime.utcfromtimestamp(timestamp).strftime(MICROSECOND_FORMAT)
-    elif isinstance(timestamp, datetime):
+        return dt.fromtimestamp(timestamp, datetime.UTC).strftime(MICROSECOND_FORMAT)
+    elif isinstance(timestamp, dt):
         return timestamp.strftime(MICROSECOND_FORMAT)
     elif isinstance(timestamp, str):
-        return datetime.strptime(timestamp, DATE_STR_FORMAT).strftime(
-            MICROSECOND_FORMAT
-        )
+        return dt.strptime(timestamp, DATE_STR_FORMAT).strftime(MICROSECOND_FORMAT)

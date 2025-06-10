@@ -12,6 +12,16 @@ how a consumer would use the library (e.g. adding unit tests, updating documenta
 
 ### Changed
 
+ - Increased minimum python version to 3.11
+ - Removed multiple legal hold methods. Now all legal hold methods go through the /v38/ api endpoints
+ - Updated documentation to reflect changes
+ - Increased requirements to match new python version
+
+
+## 1.0.1 - 2025-05-22
+
+### Changed
+
  - Version bump
 
 ## 1.0.0 - 2025-04-24
@@ -20,7 +30,7 @@ how a consumer would use the library (e.g. adding unit tests, updating documenta
 
  - As this is the first version of pycpg setting version number to 1.0.0
  - Removed Incydr functionality
- - Renamed base to pycpg from py42. This tool can now be used by calling py42.sdk.method
+ - Renamed base to pycpg from py42. This tool can now be used by calling pycpg.sdk.method
  - Updated required versions of tox ==4.25.0
  - Increased minimum python version to 3.9
  - Updated API base urls to reflect current versions of the API

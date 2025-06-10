@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.9", "3.10", "3.11"]
+        python: ["3.11", "3.12","3.13"]
     env:
       CPG_HOST: ${{ vars.CPG_HOST }}
       CPG_USER: ${{ vars.CPG_USER }}

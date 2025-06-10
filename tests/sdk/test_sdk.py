@@ -10,7 +10,6 @@ from pycpg.sdk import SDKClient
 from pycpg.services import administration
 from pycpg.services import devices
 from pycpg.services import legalhold
-from pycpg.services import legalholdapiclient
 from pycpg.services import orgs
 from pycpg.services import users
 from pycpg.services._auth import CPGRenewableAuth
@@ -60,7 +59,7 @@ class TestSDK:
         self, pycpg_connection, mock_auth
     ):
         client = SDKClient(pycpg_connection, mock_auth, auth_flag=1)
-        assert type(client.legalhold) == legalholdapiclient.LegalHoldApiClientService
+        assert type(client.legalhold) == legalhold.LegalHoldService
 
     def test_has_org_service_set(self, pycpg_connection, mock_auth):
         client = SDKClient(pycpg_connection, mock_auth)
