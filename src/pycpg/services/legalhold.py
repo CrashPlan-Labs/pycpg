@@ -2,12 +2,13 @@ from pycpg import settings
 from pycpg.exceptions import PycpgBadRequestError
 from pycpg.exceptions import PycpgError
 from pycpg.exceptions import PycpgForbiddenError
+from pycpg.exceptions import PycpgLegalHoldAlreadyActiveError
+from pycpg.exceptions import PycpgLegalHoldAlreadyDeactivatedError
 from pycpg.exceptions import PycpgLegalHoldCriteriaMissingError
 from pycpg.exceptions import PycpgLegalHoldNotFoundOrPermissionDeniedError
 from pycpg.exceptions import PycpgUserAlreadyAddedError
 from pycpg.services import BaseService
 from pycpg.services.util import get_all_pages
-from pycpg.util import parse_timestamp_to_milliseconds_precision
 
 
 def _active_state_map(active):
@@ -30,44 +31,54 @@ class LegalHoldService(BaseService):
     - Add/remove Custodians from a Matter.
     """
 
-    def create_policy(self, name, policy=None):
+    _uri_prefix = "/api/v38"
+
+    # object strings to pass to specify error messages
+    _membership_string = "membership"
+    _policy_string = "policy"
+    _matter_string = "matter"
+
+    def create_policy(self, name):
         """Creates a new Legal Hold Preservation Policy.
 
         Args:
             name (str): The name of the new Policy.
-            policy (dict, optional): The desired Preservation Policy settings as a dict. Defaults to
-                None (where the server-default backup set is used).
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v38/legal-hold-policy/create"
-        data = {"name": name, "policy": policy}
+        uri = f"{self._uri_prefix}/legal-hold-policy/create"
+        data = {"name": name}
         return self._connection.post(uri, json=data)
 
     def create_matter(
-        self, name, hold_policy_uid, description=None, notes=None, hold_ext_ref=None
+        self,
+        name,
+        legal_hold_policy_uid,
+        description=None,
+        notes=None,
+        externalReference=None,
     ):
         """Creates a new, active Legal Hold Matter.
 
         Args:
             name (str): The name of the new Legal Hold Matter.
-            hold_policy_uid (str): The identifier of the Preservation Policy that will apply to this
+            legal_hold_policy_uid (str): The identifier of the Preservation Policy that will apply to this
                 Matter.
             description (str, optional): An optional description of the Matter. Defaults to None.
             notes (str, optional): Optional notes information. Defaults to None.
-            hold_ext_ref (str, optional): Optional external reference information. Defaults to None.
+            externalReference (str, optional): Optional external reference information. Defaults to None.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v1/LegalHold"
+        uri = f"{self._uri_prefix}/legal-hold-matter/create"
         data = {
+            "policyId": legal_hold_policy_uid,
             "name": name,
-            "holdPolicyUid": hold_policy_uid,
             "description": description,
             "notes": notes,
-            "holdExtRef": hold_ext_ref,
+            "externalReference": externalReference,
         }
         return self._connection.post(uri, json=data)
 
@@ -75,14 +86,19 @@ class LegalHoldService(BaseService):
         """Gets a single Preservation Policy.
 
         Args:
-            legal_hold_policy_uid (str): The identifier of the Preservation Policy.
+            legal_hold_policy_uid (str): The unique identifier of the Preservation Policy.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the Policy.
         """
-        uri = "/api/v38/legal-hold-policy/view"
+        uri = f"{self._uri_prefix}/legal-hold-policy/view"
         params = {"legalHoldPolicyUid": legal_hold_policy_uid}
-        return self._connection.get(uri, params=params)
+        try:
+            return self._connection.get(uri, params=params)
+        except PycpgForbiddenError as err:
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_policy_uid, self._policy_string
+            )
 
     def get_policy_list(self):
         """Gets a list of existing Preservation Policies.
@@ -90,23 +106,28 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the list of Policies.
         """
-        uri = "/api/v38/legal-hold-policy/list"
+        uri = f"{self._uri_prefix}/legal-hold-policy/list"
         return self._connection.get(uri)
 
-    def get_matter_by_uid(self, legal_hold_uid):
+    def get_matter_by_uid(self, legal_hold_matter_uid):
         """Gets a single Legal Hold Matter.
 
         Args:
-            legal_hold_uid (str): The identifier of the Legal Hold Matter.
+            legal_hold_matter_uid (str): The unique identifier of the Legal Hold Matter.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`: A response containing the Matter.
         """
-        uri = f"/api/v1/LegalHold/{legal_hold_uid}"
+        uri = f"{self._uri_prefix}/legal-hold-matter/view"
+        params = {
+            "legalHoldUid": legal_hold_matter_uid,
+        }
         try:
-            return self._connection.get(uri)
+            return self._connection.get(uri, params=params)
         except PycpgForbiddenError as err:
-            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(err, legal_hold_uid)
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_matter_uid
+            )
 
     def get_matters_page(
         self,
@@ -114,7 +135,7 @@ class LegalHoldService(BaseService):
         creator_user_uid=None,
         active=True,
         name=None,
-        hold_ext_ref=None,
+        externalReference=None,
         page_size=None,
     ):
         """Gets a page of existing Legal Hold Matters.
@@ -128,30 +149,30 @@ class LegalHoldService(BaseService):
                 of state. Defaults to True.
             name (str, optional): Find Matters with a 'name' that either equals or contains
                 this value. Defaults to None.
-            hold_ext_ref (str, optional): Find Matters having a matching external reference field.
+            externalReference (str, optional): Find Matters having a matching external reference field.
                 Defaults to None.
             page_size (int, optional): The number of legal hold items to return per page.
                 Defaults to `pycpg.settings.items_per_page`.
+
 
         Returns:
             :class:`pycpg.response.PycpgResponse`:
         """
 
-        active_state = _active_state_map(active)
         page_size = page_size or settings.items_per_page
-        uri = "/api/v1/LegalHold"
+        uri = f"{self._uri_prefix}/legal-hold-matter/list"
         params = {
-            "creatorUserUid": creator_user_uid,
-            "activeState": active_state,
+            "creatorPrincipalId": creator_user_uid,
+            "active": str(active).lower(),
             "name": name,
-            "holdExtRef": hold_ext_ref,
-            "pgNum": page_num,
-            "pgSize": page_size,
+            "externalReference": externalReference,
+            "page": page_num,
+            "pageSize": page_size,
         }
         return self._connection.get(uri, params=params)
 
     def get_all_matters(
-        self, creator_user_uid=None, active=True, name=None, hold_ext_ref=None
+        self, creator_user_uid=None, active=True, name=None, externalReference=None
     ):
         """Gets all existing Legal Hold Matters.
 
@@ -163,7 +184,7 @@ class LegalHoldService(BaseService):
                 of state. Defaults to True.
             name (str, optional): Find Matters with a 'name' that either equals or contains
                 this value. Defaults to None.
-            hold_ext_ref (str, optional): Find Matters having a matching external reference field.
+            externalReference (str, optional): Find Matters having a matching external reference field.
                 Defaults to None.
 
         Returns:
@@ -172,18 +193,17 @@ class LegalHoldService(BaseService):
         """
         return get_all_pages(
             self.get_matters_page,
-            "legalHolds",
+            None,
             creator_user_uid=creator_user_uid,
             active=active,
             name=name,
-            hold_ext_ref=hold_ext_ref,
+            externalReference=externalReference,
         )
 
     def get_custodians_page(
         self,
         page_num,
-        legal_hold_membership_uid=None,
-        legal_hold_uid=None,
+        legal_hold_matter_uid=None,
         user_uid=None,
         user=None,
         active=True,
@@ -192,14 +212,12 @@ class LegalHoldService(BaseService):
         """Gets an individual page of Legal Hold memberships. One of the following
         optional args is required to determine which custodians to retrieve:
 
-        `legal_hold_membership_uid`, `legal_hold_uid`, `user_uid`, `user`
+        `legal_hold_uid`, `user_uid`, `user`
 
 
         Args:
             page_num (int): The page number to request.
-            legal_hold_membership_uid (str, optional): Find LegalHoldMemberships with a
-                specific membership UID. Defaults to None.
-            legal_hold_uid (str, optional): Find LegalHoldMemberships for the Legal Hold Matter
+            legal_hold_matter_uid (str, optional): Find LegalHoldMemberships for the Legal Hold Matter
                 with this unique identifier. Defaults to None.
             user_uid (str, optional): Find LegalHoldMemberships for the user with this identifier.
                 Defaults to None.
@@ -216,15 +234,14 @@ class LegalHoldService(BaseService):
         active_state = _active_state_map(active)
         page_size = page_size or settings.items_per_page
         params = {
-            "legalHoldMembershipUid": legal_hold_membership_uid,
-            "legalHoldUid": legal_hold_uid,
             "userUid": user_uid,
+            "legalHoldUid": legal_hold_matter_uid,
             "user": user,
-            "activeState": active_state,
-            "pgNum": page_num,
-            "pgSize": page_size,
+            "active": active_state,
+            "page": page_num,
+            "pageSize": page_size,
         }
-        uri = "/api/v1/LegalHoldMembership"
+        uri = f"{self._uri_prefix}/legal-hold-membership/list"
         try:
             return self._connection.get(uri, params=params)
         except PycpgBadRequestError as ex:
@@ -233,7 +250,7 @@ class LegalHoldService(BaseService):
             raise
 
     def get_all_matter_custodians(
-        self, legal_hold_uid=None, user_uid=None, user=None, active=True
+        self, legal_hold_matter_uid=None, user_uid=None, user=None, active=True
     ):
         """Gets all Legal Hold memberships.
 
@@ -244,7 +261,7 @@ class LegalHoldService(BaseService):
         would be part of multiple LegalHoldMembership objects).
 
         Args:
-            legal_hold_uid (str, optional): Find LegalHoldMemberships for the Legal Hold Matter
+            legal_hold_matter_uid (str, optional): Find LegalHoldMemberships for the Legal Hold Matter
                 with this unique identifier. Defaults to None.
             user_uid (str, optional): Find LegalHoldMemberships for the user with this identifier.
                 Defaults to None.
@@ -260,105 +277,37 @@ class LegalHoldService(BaseService):
         """
         return get_all_pages(
             self.get_custodians_page,
-            "legalHoldMemberships",
-            legal_hold_uid=legal_hold_uid,
+            None,
+            legal_hold_matter_uid=legal_hold_matter_uid,
             user_uid=user_uid,
             user=user,
             active=active,
         )
 
-    def get_events_page(
-        self,
-        legal_hold_uid=None,
-        min_event_date=None,
-        max_event_date=None,
-        page_num=1,
-        page_size=None,
-    ):
-        """Gets an individual page of Legal Hold events.
-
-
-        Args:
-            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold
-                Matter with this unique identifier. Defaults to None.
-            min_event_date (str or int or float or datetime, optional): Find
-                LegalHoldEvents whose eventDate is equal to or after this time.
-                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
-            max_event_date (str or int or float or datetime, optional): Find
-                LegalHoldEvents whose eventDate is equal to or before this time.
-                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
-            page_num (int): The page number to request. Defaults to 1.
-            page_size (int, optional): The size of the page.
-                Defaults to `pycpg.settings.items_per_page`.
-
-        Returns:
-            :class:`pycpg.response.PycpgResponse`:
-        """
-        page_size = page_size or settings.items_per_page
-        if min_event_date:
-            min_event_date = parse_timestamp_to_milliseconds_precision(min_event_date)
-        if max_event_date:
-            max_event_date = parse_timestamp_to_milliseconds_precision(max_event_date)
-        params = {
-            "legalHoldUid": legal_hold_uid,
-            "minEventDate": min_event_date,
-            "maxEventDate": max_event_date,
-            "pgNum": page_num,
-            "pgSize": page_size,
-        }
-        uri = "/api/v1/LegalHoldEventReport"
-
-        return self._connection.get(uri, params=params)
-
-    def get_all_events(
-        self, legal_hold_uid=None, min_event_date=None, max_event_date=None
-    ):
-        """Gets an individual page of Legal Hold events.
-
-        Args:
-            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold Matter
-                with this unique identifier. Defaults to None.
-            min_event_date (str or int or float or datetime, optional): Find
-                LegalHoldEvents whose eventDate is equal to or after this time.
-                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
-            max_event_date (str or int or float or datetime, optional): Find
-                LegalHoldEvents whose eventDate is equal to or before this time.
-                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
-
-        Returns:
-            generator: An object that iterates over :class:`pycpg.response.PycpgResponse` objects
-            that each contain a page of LegalHoldEvent objects.
-        """
-        return get_all_pages(
-            self.get_events_page,
-            "legalHoldEvents",
-            legal_hold_uid=legal_hold_uid,
-            min_event_date=min_event_date,
-            max_event_date=max_event_date,
-        )
-
-    def add_to_matter(self, user_uid, legal_hold_uid):
+    def add_to_matter(self, user_uid, legal_hold_matter_uid):
         """Add a user (Custodian) to a Legal Hold Matter.
 
         Args:
             user_uid (str): The identifier of the user.
-            legal_hold_uid (str): The identifier of the Legal Hold Matter.
+            legal_hold_matter_uid (str): The identifier of the Legal Hold Matter.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v1/LegalHoldMembership"
-        data = {"legalHoldUid": legal_hold_uid, "userUid": user_uid}
+        uri = f"{self._uri_prefix}/legal-hold-membership/create"
+        data = {"legalHoldUid": legal_hold_matter_uid, "userUid": user_uid}
         try:
             return self._connection.post(uri, json=data)
         except PycpgBadRequestError as err:
             if "USER_ALREADY_IN_HOLD" in err.response.text:
-                matter = self.get_matter_by_uid(legal_hold_uid)
-                matter_id_and_name_text = (
-                    f"legal hold matter id={legal_hold_uid}, name={matter['name']}"
-                )
+                matter = self.get_matter_by_uid(legal_hold_matter_uid)
+                matter_id_and_name_text = f"legal hold matter id={legal_hold_matter_uid}, name={matter['name']}"
                 raise PycpgUserAlreadyAddedError(err, user_uid, matter_id_and_name_text)
             raise
+        except PycpgForbiddenError as err:
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_matter_uid
+            )
 
     def remove_from_matter(self, legal_hold_membership_uid):
         """Remove a user (Custodian) from a Legal Hold Matter.
@@ -370,32 +319,55 @@ class LegalHoldService(BaseService):
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v1/LegalHoldMembershipDeactivation"
+        uri = f"{self._uri_prefix}/legal-hold-membership/deactivate"
         data = {"legalHoldMembershipUid": legal_hold_membership_uid}
-        return self._connection.post(uri, json=data)
+        try:
+            return self._connection.post(uri, json=data)
+        except PycpgForbiddenError as err:
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_membership_uid, self._membership_string
+            )
 
-    def deactivate_matter(self, legal_hold_uid):
+    def deactivate_matter(self, legal_hold_matter_uid):
         """Deactivates and closes a Legal Hold Matter.
 
         Args:
-            legal_hold_uid (str): The identifier of the Legal Hold Matter.
+            legal_hold_matter_uid (str): The identifier of the Legal Hold Matter.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        uri = "/api/v38/legal-hold-matter/deactivate"
-        data = {"legalHoldUid": legal_hold_uid}
-        return self._connection.post(uri, json=data)
+        uri = f"{self._uri_prefix}/legal-hold-matter/deactivate"
+        data = {"legalHoldUid": legal_hold_matter_uid}
+        try:
+            return self._connection.post(uri, json=data)
+        except PycpgBadRequestError as err:
+            if "ALREADY_DEACTIVATED" in err.response.text:
+                raise PycpgLegalHoldAlreadyDeactivatedError(err, legal_hold_matter_uid)
+            raise
+        except PycpgForbiddenError as err:
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_matter_uid
+            )
 
-    def reactivate_matter(self, legal_hold_uid):
+    def reactivate_matter(self, legal_hold_matter_uid):
         """Reactivates and re-opens a closed Matter.
 
         Args:
-            legal_hold_uid (str): The identifier of the Legal Hold Matter.
+            legal_hold_matter_uid (str): The identifier of the Legal Hold Matter.
 
         Returns:
             :class:`pycpg.response.PycpgResponse`
         """
-        data = {"legalHoldUid": legal_hold_uid}
-        uri = "/api/v38/legal-hold-matter/activate"
-        return self._connection.post(uri, json=data)
+        uri = f"{self._uri_prefix}/legal-hold-matter/activate"
+        data = {"legalHoldUid": legal_hold_matter_uid}
+        try:
+            return self._connection.post(uri, json=data)
+        except PycpgBadRequestError as err:
+            if "ALREADY_ACTIVE" in err.response.text:
+                raise PycpgLegalHoldAlreadyActiveError(err, legal_hold_matter_uid)
+            raise
+        except PycpgForbiddenError as err:
+            raise PycpgLegalHoldNotFoundOrPermissionDeniedError(
+                err, legal_hold_matter_uid
+            )

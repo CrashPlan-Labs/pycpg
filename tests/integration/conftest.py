@@ -1,5 +1,6 @@
+import datetime
 import os
-from datetime import datetime
+from datetime import datetime as dt
 
 import pytest
 
@@ -56,7 +57,7 @@ def _get_api_client_sdk(host, client, secret):
 
 @pytest.fixture(scope="session")
 def timestamp():
-    return convert_datetime_to_epoch(datetime.now(datetime.UTC))
+    return convert_datetime_to_epoch(dt.now(datetime.UTC))
 
 
 @pytest.fixture(scope="session")

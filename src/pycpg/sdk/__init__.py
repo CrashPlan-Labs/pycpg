@@ -258,7 +258,6 @@ def _init_services(main_connection, main_auth, auth_flag=None):
     from pycpg.services.auditlogs import AuditLogsService
     from pycpg.services.devices import DeviceService
     from pycpg.services.legalhold import LegalHoldService
-    from pycpg.services.legalholdapiclient import LegalHoldApiClientService
     from pycpg.services.orgs import OrgService
     from pycpg.services.users import UserService
 
@@ -279,10 +278,7 @@ def _init_services(main_connection, main_auth, auth_flag=None):
         administration=administration_svc,
         archive=ArchiveService(main_connection),
         devices=DeviceService(main_connection),
-        # Only use updated legal hold client if initialized with API Client authorization
-        legalhold=LegalHoldApiClientService(main_connection)
-        if auth_flag
-        else LegalHoldService(main_connection),
+        legalhold=LegalHoldService(main_connection),
         orgs=OrgService(main_connection),
         users=UserService(main_connection),
         auditlogs=AuditLogsService(audit_logs_conn),

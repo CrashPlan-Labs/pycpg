@@ -52,13 +52,13 @@ pyenv virtualenv 3.11.11 pycpg
 pyenv activate pycpg
 ```
 
-**Note**: Pycpg for end users supports Pythons versions <3.9 and <4 - However due to some of the build dependencies, you'll need a version >=3.9 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
+**Note**: Pycpg for end users supports Pythons versions <3.11 and <4 - However due to some of the build dependencies, you'll need a version >=3.9 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
 
 Use `source deactivate` to exit the virtual environment and `pyenv activate pycpg` to reactivate it.
 
 ### Windows/Linux
 
-Install a version of python 3.9 or higher from [python.org](https://python.org).
+Install a version of python 3.11 or higher from [python.org](https://python.org).
 Next, in a directory somewhere outside the project, create and activate your virtual environment:
 
 ```bash
@@ -88,7 +88,7 @@ point to your virtual environment, and you should be ready to go!
 
 ## Run a full build
 
-We use [tox](https://tox.readthedocs.io/en/latest/#) to run our build against Python 3.9, 3.10, and 3.11. When run locally, `tox` will run only against the version of python that your virtual envrionment is running, but all versions will be validated against when you [open a PR](#opening-a-pr).
+We use [tox](https://tox.readthedocs.io/en/latest/#) to run our build against Python 3.11,3.12 and 3.13. When run locally, `tox` will run only against the version of python that your virtual envrionment is running, but all versions will be validated against when you [open a PR](#opening-a-pr).
 
 To run all the unit tests, do a test build of the documentation, and check that the code meets all style requirements, simply run:
 
