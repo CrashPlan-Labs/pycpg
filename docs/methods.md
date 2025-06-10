@@ -35,7 +35,6 @@ Explore the complete public documentation for `pycpg` below.
 * [Device Settings](methoddocs/devicesettings.md)
 * [Exceptions](methoddocs/exceptions.md)
 * [Legal Hold](methoddocs/legalhold.md)
-* [Legal Hold - API Clients](methoddocs/legalholdapiclient.md)
 * [Orgs](methoddocs/orgs.md)
 * [Org Settings](methoddocs/orgsettings.md)
 * [Users](methoddocs/users.md)
