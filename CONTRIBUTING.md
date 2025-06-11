@@ -52,7 +52,7 @@ pyenv virtualenv 3.11.11 pycpg
 pyenv activate pycpg
 ```
 
-**Note**: Pycpg for end users supports Pythons versions <3.11 and <4 - However due to some of the build dependencies, you'll need a version >=3.9 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
+**Note**: Pycpg for end users supports Pythons versions <3.11 and <4 - However due to some of the build dependencies, you'll need a version >=3.11 for your virtual environment.  Use `pyenv --versions` to see all versions available for install
 
 Use `source deactivate` to exit the virtual environment and `pyenv activate pycpg` to reactivate it.
 
