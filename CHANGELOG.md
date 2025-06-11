@@ -8,11 +8,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The intended audience of this file is for pycpg consumers -- as such, changes that don't affect
 how a consumer would use the library (e.g. adding unit tests, updating documentation, etc) are not captured here.
 
+## 1.0.3 - 2025-06-11
+
+### Changed
+
+ - Fixed Legal hold methods
+ - Increased minimum python version to 3.11
+ - Updated README and getting started documentation.
+
 ## 1.0.1 - 2025-05-22
 
 ### Changed
 
- - Increased minimum python version to 3.11
  - Removed multiple legal hold methods. Now all legal hold methods go through the /v38/ api endpoints
  - Updated documentation to reflect changes
  - Increased requirements to match new python version

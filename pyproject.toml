@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 license = "MIT"
 license-files = ["LICENSE.md"]
 name = "pycpg"
-version = "1.0.2"
+version = "1.0.3"
 description = "The Official CrashPlan Python API Client"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.11"

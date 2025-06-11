@@ -22,10 +22,10 @@ pip install pycpg
 ```
 
 To install a previous version of pycpg via `pip`, add the version number. For example, to install version
-0.4.1, you would enter:
+1.0.1, you would enter:
 
 ```bash
-pip install pycpg==0.4.1
+pip install pycpg==1.0.1
 ```
 
 Visit the [project history](https://pypi.org/project/pycpg/#history) on PyPI to see all published versions.
@@ -38,18 +38,13 @@ Alternatively, you can install pycpg directly from [source code](https://github.
 git clone https://github.com/CrashPlan-Labs/pycpg.git
 ```
 
-When it finishes downloading, from the root project directory, run:
+When it finishes downloading, from the root project directory, [follow the instruction](https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#packaging-your-project) to package and install the project
+
+To create a `.tar` ball for installing elsewhere, run this command from the project's root directory:
 
 ```bash
-python setup.py install
-```
-
-### From distribution
-
-If you want create a `.tar` ball for installing elsewhere, run this command from the project's root directory:
-
-```bash
-python setup.py sdist
+python -m pip install build
+python -m build --sdist
 ```
 
 After it finishes building, the `.tar` ball will be located in the newly created `dist` directory. To install it, enter:

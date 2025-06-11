@@ -20,11 +20,8 @@ of session / authentication management.
 
 ## Installation
 
-Run the `setup.py` script to install the pycpg package and its dependencies on your system.
-You will likely need administrative privileges for this.
-
 ```bash
-$ python setup.py install
+$ pip install pycpg
 ```
 
 ## Hello, pycpg
@@ -154,14 +151,6 @@ with open("/path/to/my/file", 'wb') as f:
     for chunk in stream_response.iter_content(chunk_size=128):
         if chunk:
             f.write(chunk)
-
-# search file events -- deprecated, to be replaced with another example
-from pycpg.sdk.queries.fileevents.file_event_query import FileEventQuery
-from pycpg.sdk.queries.fileevents.filters import *
-
-query = FileEventQuery.all(MD5.eq("e804d1eb229298b04522c5504b8131f0"))
-file_events = sdk.securitydata.search_file_events(query)
-```
 
 ## Additional Resources
 
