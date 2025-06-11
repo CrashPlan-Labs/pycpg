@@ -55,10 +55,8 @@ class TestLegalHold:
             assert_successful_response(response)
             break
 
-    def test_get_custodians_page(self, connection, membership):
-        response = connection.legalhold.get_custodians_page(
-            1, legal_hold_membership_uid=membership
-        )
+    def test_get_custodians_page(self, connection, matter):
+        response = connection.legalhold.get_custodians_page(1, matter)
         assert_successful_response(response)
 
     def test_deactivate_matter(self, connection, matter):

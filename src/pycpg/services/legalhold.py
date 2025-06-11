@@ -9,6 +9,7 @@ from pycpg.exceptions import PycpgLegalHoldNotFoundOrPermissionDeniedError
 from pycpg.exceptions import PycpgUserAlreadyAddedError
 from pycpg.services import BaseService
 from pycpg.services.util import get_all_pages
+from pycpg.util import parse_timestamp_to_milliseconds_precision
 
 
 def _active_state_map(active):
@@ -282,6 +283,76 @@ class LegalHoldService(BaseService):
             user_uid=user_uid,
             user=user,
             active=active,
+        )
+
+    def get_events_page(
+        self,
+        legal_hold_uid=None,
+        min_event_date=None,
+        max_event_date=None,
+        page_num=1,
+        page_size=None,
+    ):
+        """Gets an individual page of Legal Hold events.
+
+
+        Args:
+            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold
+                Matter with this unique identifier. Defaults to None.
+            min_event_date (str or int or float or datetime, optional): Find
+                LegalHoldEvents whose eventDate is equal to or after this time.
+                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
+            max_event_date (str or int or float or datetime, optional): Find
+                LegalHoldEvents whose eventDate is equal to or before this time.
+                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
+            page_num (int): The page number to request. Defaults to 1.
+            page_size (int, optional): The size of the page.
+                Defaults to `pycpg.settings.items_per_page`.
+
+        Returns:
+            :class:`pycpg.response.PycpgResponse`:
+        """
+        page_size = page_size or settings.items_per_page
+        if min_event_date:
+            min_event_date = parse_timestamp_to_milliseconds_precision(min_event_date)
+        if max_event_date:
+            max_event_date = parse_timestamp_to_milliseconds_precision(max_event_date)
+        params = {
+            "legalHoldUid": legal_hold_uid,
+            "minEventDate": min_event_date,
+            "maxEventDate": max_event_date,
+            "page": page_num,
+            "pageSize": page_size,
+        }
+        uri = "/api/v38/legal-hold-event/list"
+
+        return self._connection.get(uri, params=params)
+
+    def get_all_events(
+        self, legal_hold_uid=None, min_event_date=None, max_event_date=None
+    ):
+        """Gets an individual page of Legal Hold events.
+
+        Args:
+            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold Matter
+                with this unique identifier. Defaults to None.
+            min_event_date (str or int or float or datetime, optional): Find
+                LegalHoldEvents whose eventDate is equal to or after this time.
+                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
+            max_event_date (str or int or float or datetime, optional): Find
+                LegalHoldEvents whose eventDate is equal to or before this time.
+                E.g. yyyy-MM-dd HH:MM:SS. Defaults to None.
+
+        Returns:
+            generator: An object that iterates over :class:`pycpg.response.PycpgResponse` objects
+            that each contain a page of LegalHoldEvent objects.
+        """
+        return get_all_pages(
+            self.get_events_page,
+            "legalHoldEvents",
+            legal_hold_uid=legal_hold_uid,
+            min_event_date=min_event_date,
+            max_event_date=max_event_date,
         )
 
     def add_to_matter(self, user_uid, legal_hold_matter_uid):
