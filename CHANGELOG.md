@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The intended audience of this file is for pycpg consumers -- as such, changes that don't affect
 how a consumer would use the library (e.g. adding unit tests, updating documentation, etc) are not captured here.
 
+## 1.0.4 - 2025-06-16
+
+### Changed
+
+- Updated get_events_page to require legal_hold_uid
+
 ## 1.0.3 - 2025-06-11
 
 ### Changed
