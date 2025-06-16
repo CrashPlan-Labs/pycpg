@@ -297,7 +297,7 @@ class LegalHoldService(BaseService):
 
 
         Args:
-            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold
+            legal_hold_uid (str): Find LegalHoldEvents for the Legal Hold
                 Matter with this unique identifier. Defaults to None.
             min_event_date (str or int or float or datetime, optional): Find
                 LegalHoldEvents whose eventDate is equal to or after this time.
@@ -334,7 +334,7 @@ class LegalHoldService(BaseService):
         """Gets an individual page of Legal Hold events.
 
         Args:
-            legal_hold_uid (str, optional): Find LegalHoldEvents for the Legal Hold Matter
+            legal_hold_uid (str): Find LegalHoldEvents for the Legal Hold Matter
                 with this unique identifier. Defaults to None.
             min_event_date (str or int or float or datetime, optional): Find
                 LegalHoldEvents whose eventDate is equal to or after this time.
@@ -349,7 +349,7 @@ class LegalHoldService(BaseService):
         """
         return get_all_pages(
             self.get_events_page,
-            "legalHoldEvents",
+            None,
             legal_hold_uid=legal_hold_uid,
             min_event_date=min_event_date,
             max_event_date=max_event_date,
