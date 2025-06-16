@@ -39,9 +39,9 @@ MOCK_GET_ALL_MATTER_CUSTODIANS_RESPONSE = """["foo"]"""
 
 MOCK_EMPTY_GET_ALL_MATTER_CUSTODIANS_RESPONSE = """[]"""
 
-MOCK_GET_ALL_EVENTS_RESPONSE = """{"legalHoldEvents":["foo"]}"""
+MOCK_GET_ALL_EVENTS_RESPONSE = """["foo"]"""
 
-MOCK_EMPTY_GET_ALL_EVENTS_RESPONSE = """{"legalHoldEvents": []}"""
+MOCK_EMPTY_GET_ALL_EVENTS_RESPONSE = """[]"""
 
 
 class TestLegalHoldService:
@@ -225,7 +225,7 @@ class TestLegalHoldService:
             mock_get_all_events_response,
             mock_get_all_events_empty_response,
         ]
-        for _ in service.get_all_events():
+        for _ in service.get_all_events("legalhold"):
             pass
         pycpg.settings.items_per_page = 500
         assert mock_connection.get.call_count == 3
