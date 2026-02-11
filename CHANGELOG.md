@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 The intended audience of this file is for pycpg consumers -- as such, changes that don't affect
 how a consumer would use the library (e.g. adding unit tests, updating documentation, etc) are not captured here.
 
+## 1.0.5 - 2026-02-11
+
+## Changed
+
+- Added support for python 3.14
+- Updated dependencies
+
 ## 1.0.4 - 2025-06-16
 
 ### Changed

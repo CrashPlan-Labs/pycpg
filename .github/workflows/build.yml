@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: ["3.11", "3.12","3.13"]
+        python: ["3.11", "3.12","3.13","3.14"]
     env:
       CPG_HOST: ${{ vars.CPG_HOST }}
       CPG_USER: ${{ vars.CPG_USER }}
@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install tox
-        run: pip install tox==4.25.0
+        run: pip install tox==4.34.1
       - name: Run Unit tests
         run: cd pycpg; tox -e py  # Run tox using the version of Python in `PATH`
       - name: Submit coverage report

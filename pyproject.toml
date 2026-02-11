@@ -6,23 +6,24 @@ build-backend = "setuptools.build_meta"
 license = "MIT"
 license-files = ["LICENSE.md"]
 name = "pycpg"
-version = "1.0.4"
+version = "1.0.5"
 description = "The Official CrashPlan Python API Client"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.11"
 keywords = ["backup","crashplan"]
 dependencies = [
-    "urllib3 >=2.4.0",
-    "requests >=2.32.4",
+    "urllib3 >=2.6.3",
+    "requests >=2.32.5",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Natural Language :: English",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython"
 ]
 
@@ -38,17 +39,17 @@ include = ["pycpg*"]
 
 [project.optional-dependencies]
 docs = [
-    "sphinx==8.2.3",
-    "myst-parser==4.0.1",
-    "sphinx_rtd_theme==3.0.2",
-    "docutils == 0.21.2",
+    "sphinx==9.1.0",
+    "myst-parser==5.0.0",
+    "sphinx_rtd_theme==3.1.0",
+    "docutils == 0.22.4",
 ]
 dev = [
-    "flake8 == 7.2.0",
-    "pytest == 8.4.0",
-    "pytest-cov == 6.1.1",
-    "pytest-mock == 3.10.0",
-    "tox == 4.25.0",
+    "flake8 == 7.3.0",
+    "pytest == 9.0.2",
+    "pytest-cov == 7.0.0",
+    "pytest-mock == 3.15.1",
+    "tox == 4.34.1",
 ]
 all = [
     "test_self_dep[docs,DEV]"
