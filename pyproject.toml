@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 license = "MIT"
 license-files = ["LICENSE.md"]
 name = "pycpg"
-version = "1.0.4"
+version = "1.0.5"
 description = "The Official CrashPlan Python API Client"
 readme = {file = "README.md", content-type = "text/markdown"}
 requires-python = ">=3.11"
@@ -16,13 +16,14 @@ dependencies = [
     "requests >=2.32.4",
 ]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Natural Language :: English",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython"
 ]
 
