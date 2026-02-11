@@ -16,7 +16,7 @@ from importlib.metadata import version as get_version
 # -- Project information -----------------------------------------------------
 
 project = "pycpg"
-copyright = "2025, CrashPlanGroup"
+copyright = "2026, CrashPlanGroup"
 author = "CrashPlanGroup"
 
 # The short X.Y version
@@ -29,7 +29,7 @@ release = get_version("pycpg")
 
 # If your documentation needs a minimal Sphinx version, state it here.
 
-needs_sphinx = "8.2.3"
+needs_sphinx = "9.1.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
